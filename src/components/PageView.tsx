@@ -1,31 +1,13 @@
-import { ArtFrame } from "@/components/ArtFrame";
+import Image from "next/image";
 import { ContactForm, LoginForm, RegisterForm } from "@/components/Forms";
 import { FaqList } from "@/components/FaqList";
 import { GamesBrowser } from "@/components/GamesBrowser";
 import { JsonLd } from "@/components/JsonLd";
 import { LocaleLink } from "@/components/LocaleLink";
-import { SOCIALS, absoluteUrl, formatDate, type Locale } from "@/lib/site";
-import type { Block, Dictionary, Post } from "@/content/types";
 import type { PageKey } from "@/content";
-
-const TONE: Record<PageKey, number> = {
-  login: 1,
-  register: 2,
-  download: 3,
-  promotion: 4,
-  popularGames: 5,
-  blog: 6,
-  topup: 7,
-  shareholder: 0,
-  agent: 2,
-  contact: 3,
-  faq: 4,
-  payments: 5,
-  about: 6,
-  responsible: 1,
-  privacy: 0,
-  terms: 7,
-};
+import type { Block, Dictionary, Post } from "@/content/types";
+import { GAME_IMAGES, PAGE_IMAGES, PAYMENT_LOGOS, PHONE_SCREENS, POST_IMAGES, PROMO_IMAGES } from "@/lib/assets";
+import { SOCIALS, absoluteUrl, formatDate, type Locale } from "@/lib/site";
 
 export function PageView({
   locale,
@@ -43,6 +25,7 @@ export function PageView({
     { name: dict.crumbs.home, path: "" },
     { name: page.h1, path },
   ];
+  const visual = pageKey in PAGE_IMAGES ? PAGE_IMAGES[pageKey as keyof typeof PAGE_IMAGES] : undefined;
 
   return (
     <article className="mx-auto max-w-6xl px-4 py-10 sm:px-6">
@@ -59,13 +42,23 @@ export function PageView({
           <li className="text-cream">{page.h1}</li>
         </ol>
       </nav>
-      <header className="mt-6 grid items-center gap-8 lg:grid-cols-[1.2fr_0.8fr]">
+      <header className={`mt-6 grid items-center gap-8 ${visual ? "lg:grid-cols-[1.15fr_0.85fr]" : ""}`}>
         <div>
           <p className="text-xs font-semibold tracking-[0.2em] text-gold uppercase">{page.eyebrow}</p>
           <h1 className="font-display mt-3 text-4xl text-cream sm:text-5xl">{page.h1}</h1>
           <p className="mt-4 max-w-2xl text-base leading-7 text-muted">{page.lead}</p>
         </div>
-        <ArtFrame tone={TONE[pageKey]} motif={TONE[pageKey] % 6} label={page.h1} className="h-56 sm:h-64" />
+        {visual ? (
+          <div className="relative h-64 overflow-hidden rounded-3xl bg-[#1a100c] sm:h-72">
+            <Image
+              src={visual.src}
+              alt={visual.alt}
+              fill
+              sizes="(max-width: 1024px) 100vw, 40vw"
+              className="object-contain"
+            />
+          </div>
+        ) : null}
       </header>
 
       <div className="mt-10 grid gap-8">
@@ -84,10 +77,10 @@ export function PageView({
           </div>
         ) : null}
         {pageKey === "popularGames" ? (
-          <GamesBrowser games={dict.games} allLabel={dict.gamesUi.all} filterLabel={dict.gamesUi.filterLabel} />
+          <GamesBrowser games={dict.games} images={GAME_IMAGES} allLabel={dict.gamesUi.all} filterLabel={dict.gamesUi.filterLabel} />
         ) : null}
         {pageKey === "promotion" ? <PromoGrid dict={dict} /> : null}
-        {pageKey === "payments" ? <PaymentGrid dict={dict} /> : null}
+        {pageKey === "payments" || pageKey === "topup" ? <PaymentGrid dict={dict} /> : null}
         {pageKey === "faq" ? <FaqList items={dict.faqs} /> : null}
         {pageKey === "blog" ? <PostList locale={locale} dict={dict} /> : null}
         {pageKey === "download" ? <PlatformNotes dict={dict} /> : null}
@@ -116,6 +109,7 @@ export function PostView({ locale, dict, post }: { locale: Locale; dict: Diction
     { name: post.title, path: `/blog/${post.slug}` },
   ];
   const others = dict.posts.filter((item) => item.slug !== post.slug).slice(0, 3);
+  const image = POST_IMAGES[post.slug];
 
   return (
     <article className="mx-auto max-w-3xl px-4 py-10 sm:px-6">
@@ -158,7 +152,11 @@ export function PostView({ locale, dict, post }: { locale: Locale; dict: Diction
         <h1 className="font-display mt-3 text-4xl text-cream">{post.title}</h1>
         <p className="mt-4 text-base leading-7 text-muted">{post.excerpt}</p>
       </header>
-      <ArtFrame tone={post.slug.length} motif={3} label={post.title} className="mt-8 h-56" />
+      {image ? (
+        <div className="mt-8 flex justify-center rounded-3xl bg-[#1a100c] p-4">
+          <Image src={image} alt="" width={220} height={280} className="h-64 w-auto object-contain" />
+        </div>
+      ) : null}
       <div className="mt-8 grid gap-8">
         {post.blocks.map((block) => (
           <BlockView key={block.heading} block={block} />
@@ -207,10 +205,18 @@ function BlockView({ block }: { block: Block }) {
 
 function PromoGrid({ dict }: { dict: Dictionary }) {
   return (
-    <ul className="grid gap-4 md:grid-cols-2">
-      {dict.promos.map((promo, index) => (
+    <ul className="grid gap-4">
+      {dict.promos.map((promo) => (
         <li key={promo.slug} className="surface overflow-hidden rounded-3xl">
-          <ArtFrame tone={index + 2} motif={index} label={promo.title} className="h-36 rounded-none" />
+          <div className="relative h-52 bg-[#1a100c] sm:h-64">
+            <Image
+              src={PROMO_IMAGES[promo.slug]}
+              alt={promo.title}
+              fill
+              sizes="(max-width: 768px) 100vw, 70vw"
+              className="object-contain"
+            />
+          </div>
           <div className="p-5">
             <h2 className="text-xl font-semibold">{promo.title}</h2>
             <p className="mt-2 text-sm leading-6 text-muted">{promo.summary}</p>
@@ -229,10 +235,21 @@ function PromoGrid({ dict }: { dict: Dictionary }) {
 function PaymentGrid({ dict }: { dict: Dictionary }) {
   return (
     <ul className="grid gap-4 md:grid-cols-2">
-      {dict.payments.map((method) => (
-        <li key={method.name} className="surface rounded-3xl p-5">
-          <h2 className="text-xl font-semibold">{method.name}</h2>
-          <p className="mt-2 text-sm leading-6 text-muted">{method.text}</p>
+      {dict.payments.map((method, index) => (
+        <li key={method.name} className="surface flex gap-4 rounded-3xl p-5">
+          <span className="flex h-20 w-20 shrink-0 items-center justify-center rounded-2xl bg-white p-2">
+            <Image
+              src={PAYMENT_LOGOS[index].src}
+              alt={PAYMENT_LOGOS[index].name}
+              width={PAYMENT_LOGOS[index].width}
+              height={PAYMENT_LOGOS[index].height}
+              className="max-h-14 w-auto object-contain"
+            />
+          </span>
+          <div>
+            <h2 className="text-xl font-semibold">{method.name}</h2>
+            <p className="mt-2 text-sm leading-6 text-muted">{method.text}</p>
+          </div>
         </li>
       ))}
     </ul>
@@ -242,22 +259,29 @@ function PaymentGrid({ dict }: { dict: Dictionary }) {
 function PostList({ locale, dict }: { locale: Locale; dict: Dictionary }) {
   return (
     <ul className="grid gap-4">
-      {dict.posts.map((post, index) => (
-        <li key={post.slug} className="surface grid overflow-hidden rounded-3xl md:grid-cols-[220px_1fr]">
-          <ArtFrame tone={index + 1} motif={index + 2} label={post.title} className="h-40 rounded-none md:h-full" />
-          <div className="p-5">
-            <p className="text-xs text-gold">
-              {formatDate(locale, post.date)} · {post.minutes} {dict.blogUi.minutes}
-            </p>
-            <h2 className="mt-2 text-2xl font-semibold">
-              <LocaleLink locale={locale} href={`/blog/${post.slug}`} className="hover:text-gold">
-                {post.title}
-              </LocaleLink>
-            </h2>
-            <p className="mt-2 text-sm leading-6 text-muted">{post.excerpt}</p>
-          </div>
-        </li>
-      ))}
+      {dict.posts.map((post) => {
+        const image = POST_IMAGES[post.slug];
+        return (
+          <li key={post.slug} className={`surface overflow-hidden rounded-3xl ${image ? "grid md:grid-cols-[180px_1fr]" : ""}`}>
+            {image ? (
+              <div className="flex items-center justify-center bg-[#1a100c] p-3">
+                <Image src={image} alt="" width={160} height={200} className="h-40 w-auto object-contain" />
+              </div>
+            ) : null}
+            <div className="p-5">
+              <p className="text-xs text-gold">
+                {formatDate(locale, post.date)} · {post.minutes} {dict.blogUi.minutes}
+              </p>
+              <h2 className="mt-2 text-2xl font-semibold">
+                <LocaleLink locale={locale} href={`/blog/${post.slug}`} className="hover:text-gold">
+                  {post.title}
+                </LocaleLink>
+              </h2>
+              <p className="mt-2 text-sm leading-6 text-muted">{post.excerpt}</p>
+            </div>
+          </li>
+        );
+      })}
     </ul>
   );
 }
@@ -265,8 +289,13 @@ function PostList({ locale, dict }: { locale: Locale; dict: Dictionary }) {
 function PlatformNotes({ dict }: { dict: Dictionary }) {
   return (
     <ul className="grid gap-4 md:grid-cols-3">
-      {dict.home.platforms.map((platform) => (
+      {dict.home.platforms.map((platform, index) => (
         <li key={platform.name} className="surface rounded-3xl p-5">
+          <div className="mx-auto mb-4 w-36 rounded-[1.6rem] border-4 border-[#2a2118] bg-black p-2">
+            <div className="flex h-48 items-center justify-center overflow-hidden rounded-[1rem] bg-[#1a100c]">
+              <Image src={PHONE_SCREENS[index]} alt="" width={220} height={280} className="h-44 w-auto object-contain" />
+            </div>
+          </div>
           <h2 className="text-lg font-semibold">{platform.name}</h2>
           <p className="mt-2 text-sm leading-6 text-muted">{platform.text}</p>
         </li>

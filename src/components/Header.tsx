@@ -85,7 +85,7 @@ function HeaderMenu({
       <div className="mx-auto flex max-w-7xl items-center gap-3 px-4 py-3 lg:px-6">
         <LocaleLink locale={locale} href="/" className="shrink-0" onClick={closeMenus}>
           <Image
-            src="/brand/m2-logo.webp"
+            src="/images/brand/m2-logo.webp"
             alt="M2 Casino"
             width={256}
             height={131}

@@ -1,15 +1,17 @@
 "use client";
 
 import { useMemo, useState } from "react";
-import { ArtFrame } from "@/components/ArtFrame";
+import Image from "next/image";
 import type { Game } from "@/content/types";
 
 export function GamesBrowser({
   games,
+  images,
   allLabel,
   filterLabel,
 }: {
   games: Game[];
+  images: Record<string, string>;
   allLabel: string;
   filterLabel: string;
 }) {
@@ -24,9 +26,7 @@ export function GamesBrowser({
           <button
             key={category}
             type="button"
-            className={`rounded-full px-4 py-2 text-sm font-semibold ${
-              active === category ? "btn-primary" : "btn-ghost"
-            }`}
+            className={`rounded-full px-4 py-2 text-sm font-semibold ${active === category ? "btn-primary" : "btn-ghost"}`}
             aria-pressed={active === category}
             onClick={() => setActive(category)}
           >
@@ -34,10 +34,18 @@ export function GamesBrowser({
           </button>
         ))}
       </div>
-      <ul className="mt-6 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
-        {visible.map((game, index) => (
+      <ul className="mt-6 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+        {visible.map((game) => (
           <li key={game.slug} className="surface overflow-hidden rounded-3xl">
-            <ArtFrame tone={index + 1} motif={index} label={game.name} className="h-44 rounded-none" />
+            <div className="bg-[#1a100c]">
+              <Image
+                src={images[game.slug]}
+                alt={game.name}
+                width={256}
+                height={320}
+                className="mx-auto h-72 w-auto object-contain"
+              />
+            </div>
             <div className="p-4">
               <p className="text-xs font-semibold tracking-[0.16em] text-gold uppercase">{game.category}</p>
               <h3 className="mt-1 text-lg font-semibold">{game.name}</h3>

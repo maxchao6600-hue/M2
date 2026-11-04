@@ -49,7 +49,7 @@ const en: Dictionary = {
     follow: "Follow M2",
     payments: "Cashier topics",
     paymentNote:
-      "The methods shown in your player cashier are the ones that apply to your account. Names here describe categories players ask about.",
+      "The methods shown in your player cashier are the ones that apply to your account. The marks named here are the ones published on the public M2 site.",
     age: "18+ only. Play with money you can afford to lose.",
     disclaimer:
       "This website explains how to use M2. It does not take wagers. Offers, game lists and cashier options can change and are confirmed inside the player account.",
@@ -98,38 +98,31 @@ const en: Dictionary = {
     },
     slides: [
       {
-        eyebrow: "M2 Casino",
-        title: "A brighter night at the reels",
-        text: "Spin through local-style slots, live tables and fishing games from one lobby built for players in Malaysia.",
+        eyebrow: "Rollex Slot & Casino",
+        title: "Rollex is on the M2 floor",
+        text: "The public M2 banner presents Rollex as a slot and casino collection. Open the lobby to see the titles your account can launch.",
         cta: "Play Now",
-        href: "/register",
+        href: "/popular-games",
       },
       {
-        eyebrow: "New players",
-        title: "Register, then read the lobby",
-        text: "Create your details, confirm you are 18 or older, and review the game rules before the first session.",
-        cta: "Register",
-        href: "/register",
-      },
-      {
-        eyebrow: "On the move",
-        title: "Pick up a session on your phone",
-        text: "Use the mobile site or the install steps for Android and iOS. The same account follows you between screens.",
-        cta: "Download",
-        href: "/download",
-      },
-      {
-        eyebrow: "Current campaigns",
-        title: "Promotions with the terms in view",
-        text: "Browse campaign types first. The live offer states the figure, the games and the expiry. Read it before you opt in.",
-        cta: "View promotions",
+        eyebrow: "Daily rebate",
+        title: "Up to 10% back, as printed",
+        text: "The published artwork states a daily rebate of up to 10%, with settlement from 12 PM to 11:59 AM and credit at 3 PM. The live offer is the record for your account.",
+        cta: "View the offer",
         href: "/promotion",
+      },
+      {
+        eyebrow: "Fa Chai",
+        title: "Slots, fishing and arcade",
+        text: "The Fa Chai launch banner covers slots, fishing and arcade games. The signed-in lobby lists what you can open today.",
+        cta: "See the games",
+        href: "/popular-games",
       },
     ],
     strip: ["Slots", "Live tables", "Fishing", "Jackpots", "Arcade", "Table games"],
     popularTitle: "Popular games in the lobby",
     popularLead:
-      "These original M2 highlights show the styles players open most often. Artwork on this site is illustrative. The live lobby names the titles currently available.",
+      "Each card uses the promotional artwork published for that title. The signed-in lobby confirms what you can launch today.",
     categoryTitle: "Game categories",
     categoryLead:
       "Start with a category when you know the pace you want. Slots are quick. Live tables follow a dealer. Fishing and arcade games sit in between.",
@@ -167,7 +160,7 @@ const en: Dictionary = {
     ],
     studioTitle: "Formats you can browse",
     studioLead:
-      "M2 groups the lobby by format. Rollex appears in M2's public brand material as a local-style slot collection. Other tiles describe formats, not exclusive studio contracts.",
+      "These tiles are provider artwork published on the public M2 site. A tile is not an exclusive contract. The signed-in lobby shows what your account can open.",
     studioNote:
       "Availability changes. The signed-in lobby is the list that matters for your account.",
     studios: [
@@ -180,7 +173,7 @@ const en: Dictionary = {
     ],
     promoTitle: "Latest promotion types",
     promoLead:
-      "Campaigns change. This page explains the shape of an offer so you know what to check. It does not publish a bonus figure that is not printed on the live campaign.",
+      "These three campaigns are the ones printed on the public M2 banners. Read the live offer in the lobby before you opt in.",
     registerTitle: "Registration, without the rush",
     registerLead:
       "A clear account is easier to recover and easier to review. Use details you can access later, and only register if you are 18 or older.",
@@ -208,7 +201,7 @@ const en: Dictionary = {
     ],
     payTitle: "Payment methods players ask about",
     payLead:
-      "Malaysian players often ask about online banking, FPX-style transfers and e-wallets such as Touch 'n Go. Your cashier lists the channels open for your account.",
+      "Touch 'n Go, FPX, GrabPay and DuitNow appear on the public M2 site. Your cashier lists the channels open for your account.",
     featureTitle: "What the platform is built around",
     featureLead:
       "The useful parts of a casino site are the ones you touch every session: finding a game, funding a wallet, and getting a reply when something looks wrong.",
@@ -248,61 +241,52 @@ const en: Dictionary = {
   },
   gamesUi: { all: "All", filterLabel: "Filter games" },
   games: [
-    { slug: "qilin-ways", name: "Qilin Ways", category: "Slots", blurb: "A ways-style reel with a gold qilin motif and a feature round explained in the paytable." },
-    { slug: "imperial-mahjong", name: "Imperial Mahjong", category: "Slots", blurb: "Tile-matching reels for players who like cascading wins and a slower read of each spin." },
-    { slug: "solar-reels", name: "Solar Reels", category: "Jackpots", blurb: "Sun-marked reels. Any prize pool is described inside the game, not on this card." },
-    { slug: "wild-ape-gold", name: "Wild Ape Gold", category: "Slots", blurb: "A jungle reel with stacked wilds. Check the stake steps before you raise them." },
-    { slug: "athena-wisdom", name: "Athena Wisdom", category: "Slots", blurb: "A classical reel with expanding symbols and a help panel that lists each feature." },
-    { slug: "dragon-treasure", name: "Dragon Treasure", category: "Jackpots", blurb: "A festival reel built around treasure chests and a bonus path you can decline." },
-    { slug: "lucky-koi", name: "Lucky Koi", category: "Slots", blurb: "A koi pond reel with shorter spins for a brief session." },
-    { slug: "neon-fishing", name: "Neon Fishing", category: "Fishing", blurb: "A shot-based room. The room card shows the cost of each shot before you enter." },
-    { slug: "baccarat-lounge", name: "Baccarat Lounge", category: "Live", blurb: "A dealer baccarat table. Road maps are a record of past rounds, not a prediction." },
-    { slug: "roulette-royale", name: "Roulette Royale", category: "Table", blurb: "A wheel table with inside and outside bets labelled on the cloth." },
-    { slug: "phoenix-lanes", name: "Phoenix Lanes", category: "Arcade", blurb: "A short lane game for players who want a break from long reel sessions." },
-    { slug: "jade-emperor", name: "Jade Emperor", category: "Slots", blurb: "A court-themed reel. Free-spin rules sit in the paytable, including how retriggers work." },
+    { slug: "fortune-tiger", name: "Fortune Tiger", category: "Slots", blurb: "The tiger reel published with the M2 lobby artwork. Read the paytable before you raise the stake." },
+    { slug: "zeus", name: "Zeus", category: "Slots", blurb: "A myth reel shown in the public M2 game art. Feature rules sit inside the game." },
+    { slug: "wisdom-athena-1000", name: "Wisdom of Athena 1000", category: "Slots", blurb: "Athena artwork from the published lobby tile. Check the help panel for how the feature pays." },
+    { slug: "mahjong-ways-2", name: "Mahjong Ways 2", category: "Slots", blurb: "A mahjong ways tile from the public artwork. Cascades and multipliers are explained in the paytable." },
+    { slug: "wild-ape", name: "Wild Ape", category: "Slots", blurb: "The ape character published on the M2 game tile. Confirm the stake steps before you start." },
+    { slug: "ways-of-the-qilin", name: "Ways of the Qilin", category: "Slots", blurb: "Qilin artwork from the published lobby tile. The feature round is described inside the game." },
+    { slug: "mahjong-coming", name: "Mahjong Coming", category: "Slots", blurb: "A mahjong tile published with the M2 game art. Read the rules on the tile you open." },
+    { slug: "super-plus", name: "Super Plus", category: "Slots", blurb: "Crown and scatter artwork published for this title. The paytable names each symbol." },
+    { slug: "monkey", name: "Monkey", category: "Slots", blurb: "The monkey character on the published game tile. This is a game title, separate from the Monkey King provider tile." },
   ],
   promos: [
     {
-      slug: "welcome-orientation",
-      title: "New member orientation",
-      summary: "A first-session campaign for accounts that have just opened. The lobby states who can join and which games count.",
-      points: ["Shown after registration", "Games listed on the offer", "One opt-in per the campaign note"],
+      slug: "rollex",
+      title: "Rollex Slot & Casino",
+      summary: "The public M2 banner presents Rollex as a slot and casino collection. The signed-in lobby shows which titles are available.",
+      points: ["Printed on the public M2 banner", "Slot and casino collection", "Availability is the signed-in lobby"],
     },
     {
-      slug: "reload-window",
-      title: "Reload window",
-      summary: "A returning-player campaign tied to a later deposit. The window opens and closes on the dates printed on the offer.",
-      points: ["Date range on the offer", "Minimum is stated there", "Not combined unless the note says so"],
+      slug: "daily-rebate",
+      title: "Daily rebate",
+      summary: "The published artwork states a daily rebate of up to 10%. Settlement is shown as 12 PM to 11:59 AM, with credit at 3 PM. The live cashier note applies to your account.",
+      points: ["Up to 10% as printed", "Settlement window on the banner", "Credited at the daily time shown"],
     },
     {
-      slug: "rebate-review",
-      title: "Rebate-style review",
-      summary: "Some campaigns look back at settled play. The percentage and the cap, if any, belong on the campaign card.",
-      points: ["Settled bets only", "Cap printed on the card", "Credited on the schedule shown"],
-    },
-    {
-      slug: "seasonal-table",
-      title: "Seasonal table nights",
-      summary: "Short events around festivals. They name the tables or reels that take part and the hour they end.",
-      points: ["Named games only", "End time in the notice", "Region limits if stated"],
+      slug: "fachai",
+      title: "Fa Chai launch",
+      summary: "The public banner announces a Fa Chai launch covering slots, fishing and arcade games. The lobby lists the titles you can open.",
+      points: ["Slots, fishing and arcade on the banner", "Launch artwork published by M2", "Titles confirmed in the lobby"],
     },
   ],
   payments: [
     {
-      name: "Online banking",
-      text: "A transfer started from the cashier. Match the amount and the account name on the bank screen before you approve it.",
+      name: "Touch 'n Go",
+      text: "The Touch 'n Go eWallet mark is shown on the public M2 site. The cashier lists whether this channel is open. Use a wallet in your own name.",
     },
     {
-      name: "FPX-style transfer",
-      text: "A local online-banking flow many Malaysian players recognise. The cashier shows whether this channel is open.",
+      name: "FPX",
+      text: "The FPX mark is shown on the public M2 site. Match the amount and the account name on the bank screen before you approve the transfer.",
     },
     {
-      name: "E-wallet",
-      text: "Wallet apps such as Touch 'n Go are a common question. Use the wallet that matches the name on your M2 account.",
+      name: "GrabPay",
+      text: "The GrabPay mark is shown on the public M2 site. The cashier shows whether this wallet is available for your account.",
     },
     {
-      name: "QR payment",
-      text: "Scan only a code presented inside the cashier session you just opened. Do not reuse a screenshot from an old chat.",
+      name: "DuitNow",
+      text: "The DuitNow mark is shown on the public M2 site. Transfer only from the cashier session you just opened.",
     },
   ],
   faqs: [
@@ -390,7 +374,7 @@ const en: Dictionary = {
           heading: "Match the category to the time you have",
           paragraphs: [
             "Slots resolve quickly. Live tables wait for other players and a dealer. Fishing rooms charge by shot. Arcade lanes are usually the shortest. Pick the one that fits the time you actually have, not the time you hope to have.",
-            "Popular tiles are a starting shelf, not a ranking of what will pay. The illustrative cards on this website use original art so they are easy to tell apart.",
+            "Popular tiles are a starting shelf, not a ranking of what will pay. Each card uses the promotional artwork published for that title.",
           ],
         },
         {
@@ -484,7 +468,7 @@ const en: Dictionary = {
     {
       heading: "M2 Casino for players in Malaysia",
       paragraphs: [
-        "M2 Casino brings slots, live tables, fishing rooms and arcade games into one lobby aimed at players who use English, Chinese or Malay. The brand mark on this site is the original M2 logo. The illustrations around it are original artwork for this guide, so they are not screenshots of a provider's game.",
+        "M2 Casino brings slots, live tables, fishing rooms and arcade games into one lobby aimed at players who use English, Chinese or Malay. The brand mark on this site is the original M2 logo. Game and provider pictures are the promotional artwork published on the public M2 site.",
         "Use the pages in the tutorial menu when you want a slower explanation. The Topup Withdrawal Guide, Shareholder page, Agent page, Contact page and FAQ answer different jobs. They are written to be read in full in the language you selected.",
       ],
     },
@@ -498,8 +482,8 @@ const en: Dictionary = {
     {
       heading: "Promotions, payments and play habits",
       paragraphs: [
-        "Promotion pages describe campaign types: orientation for new members, reload windows, rebate-style reviews and seasonal tables. The number on an offer is the number in the lobby. If this website and the lobby ever disagree, follow the lobby.",
-        "Payment notes cover online banking, FPX-style transfers, e-wallets and QR codes as categories. Pair them with the cashier checklist so references and account names stay tidy. If you need to slow down, the Responsible Gaming page is the right next read.",
+        "Promotion pages describe the campaigns printed on the public M2 banners: Rollex Slot and Casino, a daily rebate of up to 10%, and the Fa Chai launch. If this website and the lobby ever disagree, follow the lobby.",
+        "Payment notes name Touch 'n Go, FPX, GrabPay and DuitNow because those marks appear on the public M2 site. Pair them with the cashier checklist so references and account names stay tidy. If you need to slow down, the Responsible Gaming page is the right next read.",
       ],
     },
   ],
@@ -608,7 +592,7 @@ const en: Dictionary = {
       },
       eyebrow: "Campaigns",
       h1: "Promotions",
-      lead: "Each card describes a kind of campaign M2 may run. The lobby card is the offer. Read the figure, the games, the cap and the end time there.",
+      lead: "The cards below use the three campaigns printed on the public M2 banners. The signed-in lobby is still the offer that applies to your account.",
       blocks: [
         {
           heading: "How to read an offer",
@@ -620,7 +604,7 @@ const en: Dictionary = {
         {
           heading: "What this page will not do",
           paragraphs: [
-            "It will not print a bonus percentage, a free-credit amount or a wagering multiple that is not on the live offer. Those numbers change, and a stale number would be worse than none.",
+            "The daily rebate figure shown here is the one printed on the published banner: up to 10%. This page does not add a free-credit amount or a wagering multiple that is not on that artwork or the live offer.",
             "When a campaign ends, the card in the lobby is removed or marked. A blog post or a screenshot in a group chat can outlive the campaign.",
           ],
         },
@@ -638,7 +622,7 @@ const en: Dictionary = {
       },
       eyebrow: "Lobby",
       h1: "Popular games",
-      lead: "Filter by category and open the style you want. These titles are lobby highlights with original artwork. The signed-in lobby shows what you can launch today.",
+      lead: "Filter the published lobby tiles and open the title you want. The signed-in lobby shows what you can launch today.",
       blocks: [
         {
           heading: "Choosing without rushing",
@@ -650,7 +634,7 @@ const en: Dictionary = {
         {
           heading: "Artwork and names",
           paragraphs: [
-            "The pictures on this page were drawn for the M2 guide. They are not provider screenshots. Names describe the highlight tiles used across this website so English, Chinese and Malay pages point at the same games.",
+            "The pictures are the promotional tiles published for these titles. English, Chinese and Malay pages use the same names so they point at the same games.",
           ],
         },
       ],
@@ -696,7 +680,7 @@ const en: Dictionary = {
           heading: "Top up",
           paragraphs: [
             "Sign in and open the cashier. Choose a channel that is actually listed. You will be sent to a bank page or a wallet approval. Check the payee name there. Approve only if it matches the cashier.",
-            "Online banking, FPX-style transfers, e-wallets and QR codes are the categories players ask about. Your list can be shorter. A missing channel is a cashier fact, not a bug you should bypass with a personal transfer.",
+            "Touch 'n Go, FPX, GrabPay and DuitNow are the marks published on the public M2 site. Your list can be shorter. A missing channel is a cashier fact, not a bug you should bypass with a personal transfer.",
           ],
           bullets: ["Start in the cashier", "Match the amount", "Match the name", "Save the reference"],
         },
@@ -848,8 +832,8 @@ const en: Dictionary = {
     },
     payments: {
       seo: {
-        title: "M2 Casino Payment Methods | Banking, FPX, E-wallets and QR",
-        description: "Review the payment categories M2 Casino players ask about: online banking, FPX-style transfers, e-wallets and QR codes, plus cashier safety checks.",
+        title: "M2 Casino Payment Methods | Touch 'n Go, FPX, GrabPay and DuitNow",
+        description: "See the payment marks published on the public M2 site: Touch 'n Go, FPX, GrabPay and DuitNow, plus the cashier checks to make before you approve a transfer.",
       },
       eyebrow: "Cashier",
       h1: "Payment methods",
@@ -895,7 +879,7 @@ const en: Dictionary = {
           heading: "What we are careful not to claim",
           paragraphs: [
             "This site does not invent a licence number, a certification badge, a fixed withdrawal time, a payment partnership or a security guarantee. Where a fact lives in the lobby, the lobby wins.",
-            "The orange M2 mark in the header is the original logo. Decorative reels, coins and tables elsewhere were drawn for this website.",
+            "The orange M2 mark in the header is the original logo. Campaign, game and provider pictures elsewhere are artwork published on the public M2 site.",
           ],
         },
         {

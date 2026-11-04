@@ -40,7 +40,7 @@ export async function generateMetadata({
   return {
     metadataBase,
     applicationName: SITE_NAME,
-    icons: { icon: "/brand/m2-logo.webp", apple: "/brand/m2-logo.webp" },
+    icons: { icon: "/images/brand/m2-logo.webp", apple: "/images/brand/m2-logo.webp" },
     robots: { index: true, follow: true },
   };
 }
@@ -73,7 +73,7 @@ export default async function LocaleLayout({
             "@type": "Organization",
             name: SITE_NAME,
             url: SITE_URL,
-            logo: `${SITE_URL}/brand/m2-logo.webp`,
+            logo: `${SITE_URL}/images/brand/m2-logo.webp`,
             sameAs: SOCIALS.map((social) => social.href),
           }}
         />

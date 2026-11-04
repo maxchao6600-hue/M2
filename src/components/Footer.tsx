@@ -15,7 +15,7 @@ export function Footer({ locale, dict }: Props) {
     <footer className="mt-16 border-t border-[rgba(240,193,75,0.16)] bg-[#0c0a09]">
       <div className="mx-auto grid max-w-7xl gap-10 px-4 py-12 sm:px-6 lg:grid-cols-12">
         <div className="lg:col-span-4">
-          <Image src="/brand/m2-logo.webp" alt="M2 Casino" width={256} height={131} className="h-12 w-auto" />
+          <Image src="/images/brand/m2-logo.webp" alt="M2 Casino" width={256} height={131} className="h-12 w-auto" />
           <p className="mt-4 max-w-sm text-sm leading-6 text-muted">{dict.footer.blurb}</p>
           <p className="mt-4 text-sm font-semibold text-gold">{dict.footer.age}</p>
         </div>

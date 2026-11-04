@@ -39,6 +39,14 @@ body {
   font-family: var(--font-display);
 }
 
+.game-rail {
+  scrollbar-width: none;
+}
+
+.game-rail::-webkit-scrollbar {
+  display: none;
+}
+
 .gold-text {
   background: linear-gradient(180deg, #fff6d2 0%, #f0c14b 45%, #d0892b 100%);
   -webkit-background-clip: text;
