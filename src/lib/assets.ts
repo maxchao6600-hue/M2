@@ -61,6 +61,16 @@ export const PROVIDERS = [
   { name: "SV388", src: "/images/providers/sv388.webp" },
 ] as const;
 
+export const CASHIER_IMAGES = {
+  hero: "/images/cashier/hero.webp",
+  methods: "/images/cashier/methods.webp",
+  topup: "/images/cashier/topup.webp",
+  withdraw: "/images/cashier/withdraw.webp",
+  security: "/images/cashier/security.webp",
+  trouble: "/images/cashier/trouble.webp",
+  contact: "/images/cashier/contact.webp",
+} as const;
+
 export const PAYMENT_LOGOS = [
   { name: "Touch 'n Go", src: "/images/payment/touch-n-go.webp", width: 500, height: 500 },
   { name: "FPX", src: "/images/payment/fpx.webp", width: 500, height: 500 },

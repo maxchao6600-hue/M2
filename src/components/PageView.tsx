@@ -6,6 +6,7 @@ import { PromotionView } from "@/components/PromotionView";
 import { LoginView } from "@/components/LoginView";
 import { RegisterView } from "@/components/RegisterView";
 import { BlogView } from "@/components/BlogView";
+import { CashierView } from "@/components/CashierView";
 import { GamesView } from "@/components/GamesView";
 import { JsonLd } from "@/components/JsonLd";
 import { LocaleLink } from "@/components/LocaleLink";
@@ -32,6 +33,7 @@ export function PageView({
   if (pageKey === "promotion") return <PromotionView locale={locale} dict={dict} path={path} />;
   if (pageKey === "popularGames") return <GamesView locale={locale} dict={dict} path={path} />;
   if (pageKey === "blog") return <BlogView locale={locale} dict={dict} path={path} />;
+  if (pageKey === "topup") return <CashierView locale={locale} dict={dict} path={path} />;
 
   const page = dict.pages[pageKey];
   const crumbs = [
@@ -87,7 +89,7 @@ export function PageView({
             <SocialList dict={dict} />
           </div>
         ) : null}
-        {pageKey === "payments" || pageKey === "topup" ? <PaymentGrid dict={dict} /> : null}
+        {pageKey === "payments" ? <PaymentGrid dict={dict} /> : null}
         {pageKey === "faq" ? <FaqList items={dict.faqs} /> : null}
       </div>
 

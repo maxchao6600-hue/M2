@@ -278,6 +278,53 @@ export type BlogGuide = {
   };
 };
 
+export type CashierGuide = {
+  methodsCta: string;
+  stepsCta: string;
+  navTitle: string;
+  navLead: string;
+  nav: { id: "methods" | "topup" | "withdrawal" | "security"; title: string; text: string }[];
+  methodsTitle: string;
+  methodsLead: string;
+  methodsNote: string;
+  methodTitles: [string, string, string, string];
+  topupTitle: string;
+  topupLead: string;
+  topupSteps: { title: string; text: string }[];
+  withdrawTitle: string;
+  withdrawLead: string;
+  withdrawSteps: { title: string; text: string }[];
+  withdrawReminder: string;
+  compareTitle: string;
+  compareLead: string;
+  compareLabels: { purpose: string; start: string; verify: string; keep: string; status: string };
+  topupCompare: { purpose: string; start: string; verify: string; keep: string };
+  withdrawCompare: { purpose: string; start: string; verify: string; status: string };
+  securityTitle: string;
+  securityLead: string;
+  securityPoints: { title: string; text: string }[];
+  issuesTitle: string;
+  issuesLead: string;
+  issues: { title: string; text: string }[];
+  faqTitle: string;
+  faqLead: string;
+  faqs: Faq[];
+  relatedTitle: string;
+  relatedLead: string;
+  related: { href: string; title: string; text: string; link: string }[];
+  alts: {
+    hero: string;
+    methods: string;
+    topup: string;
+    withdraw: string;
+    security: string;
+    trouble: string;
+    contact: string;
+    checklist: string;
+    account: string;
+  };
+};
+
 export type Step = {
   title: string;
   text: string;
@@ -451,7 +498,7 @@ export type Dictionary = {
     promotion: InfoPage & { guide: PromotionGuide };
     popularGames: InfoPage & { guide: GamesGuide };
     blog: InfoPage & { guide: BlogGuide };
-    topup: InfoPage;
+    topup: InfoPage & { guide: CashierGuide };
     shareholder: InfoPage;
     agent: InfoPage;
     contact: InfoPage;
