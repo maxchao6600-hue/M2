@@ -1,7 +1,8 @@
 import Image from "next/image";
-import { ContactForm, RegisterForm } from "@/components/Forms";
+import { ContactForm } from "@/components/Forms";
 import { FaqList } from "@/components/FaqList";
 import { LoginView } from "@/components/LoginView";
+import { RegisterView } from "@/components/RegisterView";
 import { GamesBrowser } from "@/components/GamesBrowser";
 import { JsonLd } from "@/components/JsonLd";
 import { LocaleLink } from "@/components/LocaleLink";
@@ -22,6 +23,7 @@ export function PageView({
   path: string;
 }) {
   if (pageKey === "login") return <LoginView locale={locale} dict={dict} path={path} />;
+  if (pageKey === "register") return <RegisterView locale={locale} dict={dict} path={path} />;
 
   const page = dict.pages[pageKey];
   const crumbs = [
@@ -71,7 +73,6 @@ export function PageView({
       </div>
 
       <div className="mt-10">
-        {pageKey === "register" ? <RegisterForm forms={dict.forms} /> : null}
         {pageKey === "contact" ? (
           <div className="grid gap-6 lg:grid-cols-[1.1fr_0.9fr]">
             <ContactForm forms={dict.forms} />

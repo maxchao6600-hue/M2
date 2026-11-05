@@ -101,12 +101,25 @@ export function LoginForm({ forms, locale, title }: { forms: Forms; locale: Loca
   );
 }
 
-export function RegisterForm({ forms }: { forms: Forms }) {
+export function RegisterForm({ forms, locale, title }: { forms: Forms; locale: Locale; title: string }) {
   const [errors, setErrors] = useState<Record<string, string>>({});
   const [done, setDone] = useState(false);
+  const [pending, setPending] = useState(false);
+  const [showPassword, setShowPassword] = useState(false);
+  const [showConfirm, setShowConfirm] = useState(false);
+  const timer = useRef(0);
+  const live = useRef(true);
+
+  useEffect(() => {
+    return () => {
+      live.current = false;
+      window.clearTimeout(timer.current);
+    };
+  }, []);
 
   function onSubmit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
+    if (pending) return;
     const data = new FormData(event.currentTarget);
     const next: Record<string, string> = {};
     const username = String(data.get("username") ?? "").trim();
@@ -120,22 +133,103 @@ export function RegisterForm({ forms }: { forms: Forms }) {
     if (data.get("age") !== "on") next.age = forms.mustAgree;
     if (data.get("terms") !== "on") next.terms = forms.mustAgree;
     setErrors(next);
-    if (Object.keys(next).length === 0) setDone(true);
+    if (Object.keys(next).length > 0) return;
+    setPending(true);
+    timer.current = window.setTimeout(() => {
+      if (!live.current) return;
+      setPending(false);
+      setDone(true);
+    }, 450);
   }
 
   if (done) return <Success text={forms.registerSuccess} />;
 
   return (
-    <form onSubmit={onSubmit} className="surface grid gap-4 rounded-3xl p-5 sm:p-6" noValidate>
-      <Field label={forms.username} name="username" error={errors.username} autoComplete="username" />
-      <Field label={forms.password} name="password" type="password" error={errors.password} autoComplete="new-password" />
-      <Field label={forms.confirmPassword} name="confirm" type="password" error={errors.confirm} autoComplete="new-password" />
-      <Field label={forms.mobile} name="mobile" inputMode="tel" error={errors.mobile} autoComplete="tel" />
-      <Check label={forms.ageConfirm} name="age" error={errors.age} />
-      <Check label={forms.termsConfirm} name="terms" error={errors.terms} />
-      <button type="submit" className="btn-primary rounded-full px-5 py-3 text-sm font-semibold">
-        {forms.submitRegister}
+    <form id="register-form" onSubmit={onSubmit} className="surface grid gap-2 rounded-3xl p-4 sm:gap-3 sm:p-6" noValidate aria-busy={pending || undefined}>
+      <h2 className="font-display text-3xl leading-tight text-cream">{title}</h2>
+      <Field
+        id="register-username"
+        label={forms.username}
+        name="username"
+        error={errors.username}
+        autoComplete="username"
+        placeholder={forms.usernameHint}
+        className="text-base"
+      />
+      <Field
+        id="register-password"
+        label={forms.password}
+        name="password"
+        type={showPassword ? "text" : "password"}
+        error={errors.password}
+        autoComplete="new-password"
+        placeholder={forms.passwordHint}
+        className="pr-20 text-base"
+        end={
+          <button
+            type="button"
+            className="text-xs font-semibold text-gold"
+            aria-pressed={showPassword}
+            aria-controls="register-password"
+            aria-label={showPassword ? `${forms.hidePassword} ${forms.password}` : `${forms.showPassword} ${forms.password}`}
+            onClick={() => setShowPassword((value) => !value)}
+          >
+            {showPassword ? forms.hidePassword : forms.showPassword}
+          </button>
+        }
+      />
+      <Field
+        id="register-confirm"
+        label={forms.confirmPassword}
+        name="confirm"
+        type={showConfirm ? "text" : "password"}
+        error={errors.confirm}
+        autoComplete="new-password"
+        placeholder={forms.confirmHint}
+        className="pr-20 text-base"
+        end={
+          <button
+            type="button"
+            className="text-xs font-semibold text-gold"
+            aria-pressed={showConfirm}
+            aria-controls="register-confirm"
+            aria-label={showConfirm ? `${forms.hidePassword} ${forms.confirmPassword}` : `${forms.showPassword} ${forms.confirmPassword}`}
+            onClick={() => setShowConfirm((value) => !value)}
+          >
+            {showConfirm ? forms.hidePassword : forms.showPassword}
+          </button>
+        }
+      />
+      <Field
+        id="register-mobile"
+        label={forms.mobile}
+        name="mobile"
+        inputMode="tel"
+        error={errors.mobile}
+        autoComplete="tel"
+        placeholder={forms.mobileHint}
+        className="text-base"
+      />
+      <div className="grid gap-2 rounded-2xl border border-white/10 bg-[#120e0c] p-3">
+        <Check id="register-age" label={forms.ageConfirm} name="age" error={errors.age} />
+        <Check
+          id="register-terms"
+          name="terms"
+          error={errors.terms}
+          label={
+            <>
+              {forms.termsBefore}<LocaleLink locale={locale} href="/terms" className="font-semibold text-gold hover:text-gold-soft">{forms.termsName}</LocaleLink>{forms.termsAnd}<LocaleLink locale={locale} href="/privacy-policy" className="font-semibold text-gold hover:text-gold-soft">{forms.privacyName}</LocaleLink>{forms.termsAfter}
+            </>
+          }
+        />
+      </div>
+      <button type="submit" className="btn-primary rounded-full px-5 py-3 text-sm font-semibold disabled:opacity-70" disabled={pending}>
+        {pending ? forms.checking : forms.submitRegister}
       </button>
+      <LocaleLink locale={locale} href="/login" className="text-sm font-semibold text-gold hover:text-gold-soft">
+        {forms.loginInstead}
+      </LocaleLink>
+      <p className="text-xs leading-5 text-muted">{forms.registerNotice}</p>
     </form>
   );
 }
@@ -197,6 +291,7 @@ function Field({
   className = "",
   inputRef,
   end,
+  placeholder,
 }: {
   label: string;
   name: string;
@@ -208,6 +303,7 @@ function Field({
   className?: string;
   inputRef?: Ref<HTMLInputElement>;
   end?: ReactNode;
+  placeholder?: string;
 }) {
   const errorId = error && id ? `${id}-error` : undefined;
   return (
@@ -223,9 +319,10 @@ function Field({
           type={type}
           autoComplete={autoComplete}
           inputMode={inputMode}
+          placeholder={placeholder}
           aria-invalid={error ? true : undefined}
           aria-describedby={errorId}
-          className={`w-full rounded-xl border border-white/10 bg-[#120e0c] px-3 py-3 text-cream outline-none focus:border-gold ${className}`}
+          className={`w-full rounded-xl border border-white/10 bg-[#120e0c] px-3 py-3 text-cream outline-none placeholder:text-muted/70 focus:border-gold ${className}`}
         />
         {end ? <div className="absolute inset-y-0 right-3 flex items-center">{end}</div> : null}
       </div>
@@ -238,14 +335,26 @@ function Field({
   );
 }
 
-function Check({ label, name, error }: { label: string; name: string; error?: string }) {
+function Check({ id, label, name, error }: { id: string; label: ReactNode; name: string; error?: string }) {
+  const errorId = error ? `${id}-error` : undefined;
   return (
     <div>
-      <label className="flex items-start gap-2 text-sm leading-6 text-cream/85">
-        <input type="checkbox" name={name} className="mt-1 accent-orange" />
+      <label htmlFor={id} className="flex items-start gap-3 text-sm leading-6 text-cream/90">
+        <input
+          id={id}
+          type="checkbox"
+          name={name}
+          className="mt-1 size-4 shrink-0 accent-orange"
+          aria-invalid={error ? true : undefined}
+          aria-describedby={errorId}
+        />
         <span>{label}</span>
       </label>
-      {error ? <span className="text-xs text-orange">{error}</span> : null}
+      {error ? (
+        <span id={errorId} className="mt-1 block pl-7 text-xs text-orange">
+          {error}
+        </span>
+      ) : null}
     </div>
   );
 }

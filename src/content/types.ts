@@ -72,6 +72,30 @@ export type LoginGuide = {
   related: { href: string; label: string; text: string }[];
 };
 
+export type RegisterGuide = {
+  formTitle: string;
+  points: string[];
+  ageNote: string;
+  artAlt: string;
+  processTitle: string;
+  processLead: string;
+  steps: { title: string; text: string }[];
+  requirementsTitle: string;
+  requirementsLead: string;
+  requirements: { title: string; text: string }[];
+  troubleTitle: string;
+  troubleLead: string;
+  troubles: { id: string; title: string; text: string; steps: string[]; href: string; link: string }[];
+  securityTitle: string;
+  securityLead: string;
+  security: { title: string; text: string }[];
+  faqTitle: string;
+  faqLead: string;
+  faqs: Faq[];
+  relatedTitle: string;
+  related: { href: string; label: string; text: string }[];
+};
+
 export type Step = {
   title: string;
   text: string;
@@ -164,6 +188,17 @@ export type Dictionary = {
     forgotDetails: string;
     registerInstead: string;
     loginNotice: string;
+    usernameHint: string;
+    passwordHint: string;
+    confirmHint: string;
+    mobileHint: string;
+    registerNotice: string;
+    loginInstead: string;
+    termsBefore: string;
+    termsName: string;
+    termsAnd: string;
+    privacyName: string;
+    termsAfter: string;
     submitRegister: string;
     submitContact: string;
     ageConfirm: string;
@@ -229,7 +264,7 @@ export type Dictionary = {
   seoBlocks: Block[];
   pages: {
     login: InfoPage & { guide: LoginGuide };
-    register: InfoPage;
+    register: InfoPage & { guide: RegisterGuide };
     download: InfoPage;
     promotion: InfoPage;
     popularGames: InfoPage;
