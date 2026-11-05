@@ -96,6 +96,47 @@ export type RegisterGuide = {
   related: { href: string; label: string; text: string }[];
 };
 
+export type DownloadGuide = {
+  badges: [string, string, string];
+  explore: string;
+  registerCta: string;
+  homeAlt: string;
+  lobbyAlt: string;
+  gamesAlt: string;
+  desktopAlt: string;
+  androidTitle: string;
+  androidLead: string;
+  androidSteps: string[];
+  iosTitle: string;
+  iosLead: string;
+  iosSteps: string[];
+  desktopTitle: string;
+  desktopLead: string;
+  desktopSteps: string[];
+  installTitle: string;
+  installLead: string;
+  install: { title: string; text: string }[];
+  playTitle: string;
+  playLead: string;
+  slotsTitle: string;
+  liveTitle: string;
+  liveLead: string;
+  fishingTitle: string;
+  fishingLead: string;
+  providersTitle: string;
+  providersLead: string;
+  benefitsTitle: string;
+  benefits: { title: string; text: string }[];
+  troubleTitle: string;
+  troubleLead: string;
+  troubles: { title: string; text: string }[];
+  faqTitle: string;
+  faqLead: string;
+  faqs: Faq[];
+  relatedTitle: string;
+  related: { href: string; label: string; text: string }[];
+};
+
 export type Step = {
   title: string;
   text: string;
@@ -265,7 +306,7 @@ export type Dictionary = {
   pages: {
     login: InfoPage & { guide: LoginGuide };
     register: InfoPage & { guide: RegisterGuide };
-    download: InfoPage;
+    download: InfoPage & { guide: DownloadGuide };
     promotion: InfoPage;
     popularGames: InfoPage;
     blog: InfoPage;

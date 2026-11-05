@@ -1,6 +1,7 @@
 import Image from "next/image";
 import { ContactForm } from "@/components/Forms";
 import { FaqList } from "@/components/FaqList";
+import { DownloadView } from "@/components/DownloadView";
 import { LoginView } from "@/components/LoginView";
 import { RegisterView } from "@/components/RegisterView";
 import { GamesBrowser } from "@/components/GamesBrowser";
@@ -8,7 +9,7 @@ import { JsonLd } from "@/components/JsonLd";
 import { LocaleLink } from "@/components/LocaleLink";
 import type { PageKey } from "@/content";
 import type { Block, Dictionary, Post } from "@/content/types";
-import { GAME_IMAGES, PAGE_IMAGES, PAYMENT_LOGOS, PHONE_SCREENS, POST_IMAGES, PROMO_IMAGES } from "@/lib/assets";
+import { GAME_IMAGES, PAGE_IMAGES, PAYMENT_LOGOS, POST_IMAGES, PROMO_IMAGES } from "@/lib/assets";
 import { SOCIALS, absoluteUrl, formatDate, type Locale } from "@/lib/site";
 
 export function PageView({
@@ -24,6 +25,7 @@ export function PageView({
 }) {
   if (pageKey === "login") return <LoginView locale={locale} dict={dict} path={path} />;
   if (pageKey === "register") return <RegisterView locale={locale} dict={dict} path={path} />;
+  if (pageKey === "download") return <DownloadView locale={locale} dict={dict} path={path} />;
 
   const page = dict.pages[pageKey];
   const crumbs = [
@@ -86,7 +88,6 @@ export function PageView({
         {pageKey === "payments" || pageKey === "topup" ? <PaymentGrid dict={dict} /> : null}
         {pageKey === "faq" ? <FaqList items={dict.faqs} /> : null}
         {pageKey === "blog" ? <PostList locale={locale} dict={dict} /> : null}
-        {pageKey === "download" ? <PlatformNotes dict={dict} /> : null}
       </div>
 
       <aside className="mt-12">
@@ -285,24 +286,6 @@ function PostList({ locale, dict }: { locale: Locale; dict: Dictionary }) {
           </li>
         );
       })}
-    </ul>
-  );
-}
-
-function PlatformNotes({ dict }: { dict: Dictionary }) {
-  return (
-    <ul className="grid gap-4 md:grid-cols-3">
-      {dict.home.platforms.map((platform, index) => (
-        <li key={platform.name} className="surface rounded-3xl p-5">
-          <div className="mx-auto mb-4 w-36 rounded-[1.6rem] border-4 border-[#2a2118] bg-black p-2">
-            <div className="flex h-48 items-center justify-center overflow-hidden rounded-[1rem] bg-[#1a100c]">
-              <Image src={PHONE_SCREENS[index]} alt="" width={220} height={280} className="h-44 w-auto object-contain" />
-            </div>
-          </div>
-          <h2 className="text-lg font-semibold">{platform.name}</h2>
-          <p className="mt-2 text-sm leading-6 text-muted">{platform.text}</p>
-        </li>
-      ))}
     </ul>
   );
 }
