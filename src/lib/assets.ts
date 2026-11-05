@@ -1,3 +1,5 @@
+import type { BlogCategoryId } from "@/content/types";
+
 export const LOGO = "/images/brand/m2-logo.webp";
 
 export const HERO_SLIDES = [
@@ -67,9 +69,23 @@ export const PAYMENT_LOGOS = [
 ] as const;
 
 export const POST_IMAGES: Record<string, string> = {
-  "getting-started": "/images/providers/pragmatic-play.webp",
-  "reading-the-lobby": "/images/providers/evolution.webp",
-  "cashier-checklist": "/images/payment/fpx.webp",
+  "getting-started": "/images/blog/getting-started.webp",
+  "reading-the-lobby": "/images/blog/reading-the-lobby.webp",
+  "cashier-checklist": "/images/blog/cashier-checklist.webp",
+  "keeping-play-in-proportion": "/images/blog/keeping-play.webp",
+};
+
+export const BLOG_SCENES = {
+  fishing: "/images/blog/fishing.webp",
+  arcade: "/images/blog/arcade.webp",
+  live: "/images/blog/live-table.webp",
+} as const;
+
+export const POST_CATEGORY: Record<string, BlogCategoryId> = {
+  "getting-started": "start",
+  "reading-the-lobby": "guides",
+  "cashier-checklist": "payments",
+  "keeping-play-in-proportion": "responsible",
 };
 
 export const PAGE_IMAGES = {

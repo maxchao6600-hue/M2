@@ -5,13 +5,15 @@ import { DownloadView } from "@/components/DownloadView";
 import { PromotionView } from "@/components/PromotionView";
 import { LoginView } from "@/components/LoginView";
 import { RegisterView } from "@/components/RegisterView";
+import { BlogView } from "@/components/BlogView";
 import { GamesView } from "@/components/GamesView";
 import { JsonLd } from "@/components/JsonLd";
 import { LocaleLink } from "@/components/LocaleLink";
 import type { PageKey } from "@/content";
 import type { Block, Dictionary, Post } from "@/content/types";
 import { PAGE_IMAGES, PAYMENT_LOGOS, POST_IMAGES } from "@/lib/assets";
-import { SOCIALS, absoluteUrl, formatDate, type Locale } from "@/lib/site";
+import { postCategoryId, postCoverAlt } from "@/lib/blog";
+import { SOCIALS, SITE_URL, absoluteUrl, formatDate, type Locale } from "@/lib/site";
 
 export function PageView({
   locale,
@@ -29,6 +31,7 @@ export function PageView({
   if (pageKey === "download") return <DownloadView locale={locale} dict={dict} path={path} />;
   if (pageKey === "promotion") return <PromotionView locale={locale} dict={dict} path={path} />;
   if (pageKey === "popularGames") return <GamesView locale={locale} dict={dict} path={path} />;
+  if (pageKey === "blog") return <BlogView locale={locale} dict={dict} path={path} />;
 
   const page = dict.pages[pageKey];
   const crumbs = [
@@ -86,7 +89,6 @@ export function PageView({
         ) : null}
         {pageKey === "payments" || pageKey === "topup" ? <PaymentGrid dict={dict} /> : null}
         {pageKey === "faq" ? <FaqList items={dict.faqs} /> : null}
-        {pageKey === "blog" ? <PostList locale={locale} dict={dict} /> : null}
       </div>
 
       <aside className="mt-12">
@@ -106,6 +108,7 @@ export function PageView({
 }
 
 export function PostView({ locale, dict, post }: { locale: Locale; dict: Dictionary; post: Post }) {
+  const guide = dict.pages.blog.guide;
   const crumbs = [
     { name: dict.crumbs.home, path: "" },
     { name: dict.nav.blog, path: "/blog" },
@@ -113,9 +116,10 @@ export function PostView({ locale, dict, post }: { locale: Locale; dict: Diction
   ];
   const others = dict.posts.filter((item) => item.slug !== post.slug).slice(0, 3);
   const image = POST_IMAGES[post.slug];
+  const category = guide.categories.find((item) => item.id === postCategoryId(post.slug));
 
   return (
-    <article className="mx-auto max-w-3xl px-4 py-10 sm:px-6">
+    <article className="mx-auto min-w-0 max-w-3xl overflow-x-clip px-4 py-8 sm:px-6">
       <JsonLd
         data={{
           "@context": "https://schema.org",
@@ -125,6 +129,7 @@ export function PostView({ locale, dict, post }: { locale: Locale; dict: Diction
           dateModified: post.date,
           inLanguage: locale === "zh" ? "zh-Hans" : locale,
           description: post.excerpt,
+          image: image ? `${SITE_URL}${image}` : undefined,
           mainEntityOfPage: absoluteUrl(locale, `/blog/${post.slug}`),
           author: { "@type": "Organization", name: "M2 Casino" },
           publisher: { "@type": "Organization", name: "M2 Casino" },
@@ -149,32 +154,57 @@ export function PostView({ locale, dict, post }: { locale: Locale; dict: Diction
         </ol>
       </nav>
       <header className="mt-6">
-        <p className="text-sm text-gold">
+        {category ? <p className="text-[11px] font-semibold tracking-[0.16em] text-gold uppercase">{category.label}</p> : null}
+        <p className="mt-3 text-sm text-gold">
           {dict.blogUi.published} {formatDate(locale, post.date)} · {post.minutes} {dict.blogUi.minutes}
         </p>
-        <h1 className="font-display mt-3 text-4xl text-cream">{post.title}</h1>
+        <h1 className="font-display mt-3 break-words text-3xl leading-tight text-cream sm:text-5xl">{post.title}</h1>
         <p className="mt-4 text-base leading-7 text-muted">{post.excerpt}</p>
       </header>
       {image ? (
-        <div className="mt-8 flex justify-center rounded-3xl bg-[#1a100c] p-4">
-          <Image src={image} alt="" width={220} height={280} className="h-64 w-auto object-contain" />
+        <div className="relative mt-8 aspect-[16/9] overflow-hidden rounded-[1.6rem] ring-1 ring-gold/30">
+          <Image src={image} alt={postCoverAlt(guide, post.slug)} fill priority sizes="(max-width: 768px) 100vw, 768px" className="object-cover" />
         </div>
       ) : null}
+      <nav aria-label={guide.toc} className="surface mt-8 rounded-3xl p-5">
+        <h2 className="text-sm font-semibold tracking-[0.16em] text-gold uppercase">{guide.toc}</h2>
+        <ol className="mt-3 grid gap-2">
+          {post.blocks.map((block, index) => (
+            <li key={block.heading}>
+              <a href={`#section-${index}`} className="text-sm text-cream hover:text-gold">
+                {index + 1}. {block.heading}
+              </a>
+            </li>
+          ))}
+        </ol>
+      </nav>
       <div className="mt-8 grid gap-8">
-        {post.blocks.map((block) => (
-          <BlockView key={block.heading} block={block} />
+        {post.blocks.map((block, index) => (
+          <BlockView key={block.heading} block={block} id={`section-${index}`} />
         ))}
       </div>
       <aside className="mt-12">
         <h2 className="text-lg font-semibold">{dict.blogUi.related}</h2>
         <ul className="mt-4 grid gap-3">
-          {others.map((item) => (
-            <li key={item.slug}>
-              <LocaleLink locale={locale} href={`/blog/${item.slug}`} className="text-gold hover:text-gold-soft">
-                {item.title}
-              </LocaleLink>
-            </li>
-          ))}
+          {others.map((item) => {
+            const relatedImage = POST_IMAGES[item.slug];
+            const relatedCategory = guide.categories.find((entry) => entry.id === postCategoryId(item.slug));
+            return (
+              <li key={item.slug}>
+                <LocaleLink locale={locale} href={`/blog/${item.slug}`} className="surface grid grid-cols-[7.5rem_1fr] overflow-hidden rounded-2xl">
+                  {relatedImage ? (
+                    <span className="relative block min-h-24">
+                      <Image src={relatedImage} alt={postCoverAlt(guide, item.slug)} fill sizes="120px" className="object-cover" />
+                    </span>
+                  ) : null}
+                  <span className="p-3">
+                    {relatedCategory ? <span className="text-[11px] font-semibold tracking-[0.14em] text-gold uppercase">{relatedCategory.label}</span> : null}
+                    <span className="mt-1 block font-semibold text-cream">{item.title}</span>
+                  </span>
+                </LocaleLink>
+              </li>
+            );
+          })}
         </ul>
         <LocaleLink locale={locale} href="/blog" className="btn-ghost mt-6 inline-flex rounded-full px-4 py-2 text-sm font-semibold">
           {dict.blogUi.allPosts}
@@ -184,9 +214,9 @@ export function PostView({ locale, dict, post }: { locale: Locale; dict: Diction
   );
 }
 
-function BlockView({ block }: { block: Block }) {
+function BlockView({ block, id }: { block: Block; id?: string }) {
   return (
-    <section>
+    <section id={id} className={id ? "scroll-mt-28" : undefined}>
       <h2 className="text-2xl font-semibold text-cream">{block.heading}</h2>
       {block.paragraphs.map((paragraph) => (
         <p key={paragraph.slice(0, 40)} className="mt-3 text-sm leading-7 text-muted sm:text-base">
@@ -226,36 +256,6 @@ function PaymentGrid({ dict }: { dict: Dictionary }) {
           </div>
         </li>
       ))}
-    </ul>
-  );
-}
-
-function PostList({ locale, dict }: { locale: Locale; dict: Dictionary }) {
-  return (
-    <ul className="grid gap-4">
-      {dict.posts.map((post) => {
-        const image = POST_IMAGES[post.slug];
-        return (
-          <li key={post.slug} className={`surface overflow-hidden rounded-3xl ${image ? "grid md:grid-cols-[180px_1fr]" : ""}`}>
-            {image ? (
-              <div className="flex items-center justify-center bg-[#1a100c] p-3">
-                <Image src={image} alt="" width={160} height={200} className="h-40 w-auto object-contain" />
-              </div>
-            ) : null}
-            <div className="p-5">
-              <p className="text-xs text-gold">
-                {formatDate(locale, post.date)} · {post.minutes} {dict.blogUi.minutes}
-              </p>
-              <h2 className="mt-2 text-2xl font-semibold">
-                <LocaleLink locale={locale} href={`/blog/${post.slug}`} className="hover:text-gold">
-                  {post.title}
-                </LocaleLink>
-              </h2>
-              <p className="mt-2 text-sm leading-6 text-muted">{post.excerpt}</p>
-            </div>
-          </li>
-        );
-      })}
     </ul>
   );
 }

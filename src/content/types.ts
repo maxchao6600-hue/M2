@@ -232,6 +232,52 @@ export type GamesGuide = {
   registerCta: string;
 };
 
+export type BlogCategoryId = "start" | "guides" | "payments" | "responsible";
+
+export type BlogGuide = {
+  read: string;
+  browse: string;
+  featuredKicker: string;
+  featuredTitle: string;
+  featuredLead: string;
+  latestTitle: string;
+  latestLead: string;
+  searchLabel: string;
+  searchPlaceholder: string;
+  countLabel: string;
+  clear: string;
+  empty: string;
+  allLabel: string;
+  categoriesTitle: string;
+  categoriesLead: string;
+  categories: { id: BlogCategoryId; label: string; text: string }[];
+  picksTitle: string;
+  picksLead: string;
+  guidesTitle: string;
+  guidesLead: string;
+  gameTopics: { id: "slots" | "mahjong" | "fishing" | "arcade" | "live"; title: string; text: string; link: string }[];
+  accountTitle: string;
+  accountLead: string;
+  accountTopics: { title: string; text: string; href: string; link: string; art: "start" | "cashier" }[];
+  careTitle: string;
+  careLead: string;
+  carePoints: { title: string; text: string }[];
+  careArticle: string;
+  carePage: string;
+  closeTitle: string;
+  closeLead: string;
+  toc: string;
+  alts: {
+    start: string;
+    lobby: string;
+    cashier: string;
+    care: string;
+    fishing: string;
+    arcade: string;
+    live: string;
+  };
+};
+
 export type Step = {
   title: string;
   text: string;
@@ -404,7 +450,7 @@ export type Dictionary = {
     download: InfoPage & { guide: DownloadGuide };
     promotion: InfoPage & { guide: PromotionGuide };
     popularGames: InfoPage & { guide: GamesGuide };
-    blog: InfoPage;
+    blog: InfoPage & { guide: BlogGuide };
     topup: InfoPage;
     shareholder: InfoPage;
     agent: InfoPage;
