@@ -137,6 +137,59 @@ export type DownloadGuide = {
   related: { href: string; label: string; text: string }[];
 };
 
+export type PromoCategoryId = "featured" | "rebate" | "launch" | "slots" | "fishing";
+
+export type PromotionCampaign = {
+  slug: "rollex" | "daily-rebate" | "fachai";
+  title: string;
+  imageAlt: string;
+  summary: string;
+  points: string[];
+  detail: string;
+  chips?: string[];
+  categories: Exclude<PromoCategoryId, "featured">[];
+};
+
+export type PromotionGuide = {
+  explore: string;
+  viewDetails: string;
+  heroAlt: string;
+  lobbyAlt: string;
+  categoriesTitle: string;
+  categoriesLead: string;
+  categories: { id: PromoCategoryId; label: string; text: string }[];
+  featuredTitle: string;
+  featuredLead: string;
+  empty: string;
+  highlightsTitle: string;
+  highlightsLead: string;
+  campaigns: [PromotionCampaign, PromotionCampaign, PromotionCampaign];
+  stepsTitle: string;
+  stepsLead: string;
+  steps: { title: string; text: string }[];
+  termsTitle: string;
+  termsLead: string;
+  terms: { title: string; text: string }[];
+  rebateTitle: string;
+  rebateLead: string;
+  rebateFacts: { label: string; value: string }[];
+  rebateNote: string;
+  playTitle: string;
+  playLead: string;
+  slotsTitle: string;
+  fishingTitle: string;
+  fishingLead: string;
+  gamesCta: string;
+  faqTitle: string;
+  faqLead: string;
+  faqs: Faq[];
+  relatedTitle: string;
+  related: { href: string; label: string; text: string }[];
+  closeTitle: string;
+  closeLead: string;
+  registerCta: string;
+};
+
 export type Step = {
   title: string;
   text: string;
@@ -307,7 +360,7 @@ export type Dictionary = {
     login: InfoPage & { guide: LoginGuide };
     register: InfoPage & { guide: RegisterGuide };
     download: InfoPage & { guide: DownloadGuide };
-    promotion: InfoPage;
+    promotion: InfoPage & { guide: PromotionGuide };
     popularGames: InfoPage;
     blog: InfoPage;
     topup: InfoPage;

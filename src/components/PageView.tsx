@@ -2,6 +2,7 @@ import Image from "next/image";
 import { ContactForm } from "@/components/Forms";
 import { FaqList } from "@/components/FaqList";
 import { DownloadView } from "@/components/DownloadView";
+import { PromotionView } from "@/components/PromotionView";
 import { LoginView } from "@/components/LoginView";
 import { RegisterView } from "@/components/RegisterView";
 import { GamesBrowser } from "@/components/GamesBrowser";
@@ -9,7 +10,7 @@ import { JsonLd } from "@/components/JsonLd";
 import { LocaleLink } from "@/components/LocaleLink";
 import type { PageKey } from "@/content";
 import type { Block, Dictionary, Post } from "@/content/types";
-import { GAME_IMAGES, PAGE_IMAGES, PAYMENT_LOGOS, POST_IMAGES, PROMO_IMAGES } from "@/lib/assets";
+import { GAME_IMAGES, PAGE_IMAGES, PAYMENT_LOGOS, POST_IMAGES } from "@/lib/assets";
 import { SOCIALS, absoluteUrl, formatDate, type Locale } from "@/lib/site";
 
 export function PageView({
@@ -26,6 +27,7 @@ export function PageView({
   if (pageKey === "login") return <LoginView locale={locale} dict={dict} path={path} />;
   if (pageKey === "register") return <RegisterView locale={locale} dict={dict} path={path} />;
   if (pageKey === "download") return <DownloadView locale={locale} dict={dict} path={path} />;
+  if (pageKey === "promotion") return <PromotionView locale={locale} dict={dict} path={path} />;
 
   const page = dict.pages[pageKey];
   const crumbs = [
@@ -84,7 +86,6 @@ export function PageView({
         {pageKey === "popularGames" ? (
           <GamesBrowser games={dict.games} images={GAME_IMAGES} allLabel={dict.gamesUi.all} filterLabel={dict.gamesUi.filterLabel} />
         ) : null}
-        {pageKey === "promotion" ? <PromoGrid dict={dict} /> : null}
         {pageKey === "payments" || pageKey === "topup" ? <PaymentGrid dict={dict} /> : null}
         {pageKey === "faq" ? <FaqList items={dict.faqs} /> : null}
         {pageKey === "blog" ? <PostList locale={locale} dict={dict} /> : null}
@@ -204,35 +205,6 @@ function BlockView({ block }: { block: Block }) {
         </ul>
       ) : null}
     </section>
-  );
-}
-
-function PromoGrid({ dict }: { dict: Dictionary }) {
-  return (
-    <ul className="grid gap-4">
-      {dict.promos.map((promo) => (
-        <li key={promo.slug} className="surface overflow-hidden rounded-3xl">
-          <div className="relative h-52 bg-[#1a100c] sm:h-64">
-            <Image
-              src={PROMO_IMAGES[promo.slug]}
-              alt={promo.title}
-              fill
-              sizes="(max-width: 768px) 100vw, 70vw"
-              className="object-contain"
-            />
-          </div>
-          <div className="p-5">
-            <h2 className="text-xl font-semibold">{promo.title}</h2>
-            <p className="mt-2 text-sm leading-6 text-muted">{promo.summary}</p>
-            <ul className="mt-3 grid gap-1 text-sm">
-              {promo.points.map((point) => (
-                <li key={point}>• {point}</li>
-              ))}
-            </ul>
-          </div>
-        </li>
-      ))}
-    </ul>
   );
 }
 
