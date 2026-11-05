@@ -5,12 +5,12 @@ import { DownloadView } from "@/components/DownloadView";
 import { PromotionView } from "@/components/PromotionView";
 import { LoginView } from "@/components/LoginView";
 import { RegisterView } from "@/components/RegisterView";
-import { GamesBrowser } from "@/components/GamesBrowser";
+import { GamesView } from "@/components/GamesView";
 import { JsonLd } from "@/components/JsonLd";
 import { LocaleLink } from "@/components/LocaleLink";
 import type { PageKey } from "@/content";
 import type { Block, Dictionary, Post } from "@/content/types";
-import { GAME_IMAGES, PAGE_IMAGES, PAYMENT_LOGOS, POST_IMAGES } from "@/lib/assets";
+import { PAGE_IMAGES, PAYMENT_LOGOS, POST_IMAGES } from "@/lib/assets";
 import { SOCIALS, absoluteUrl, formatDate, type Locale } from "@/lib/site";
 
 export function PageView({
@@ -28,6 +28,7 @@ export function PageView({
   if (pageKey === "register") return <RegisterView locale={locale} dict={dict} path={path} />;
   if (pageKey === "download") return <DownloadView locale={locale} dict={dict} path={path} />;
   if (pageKey === "promotion") return <PromotionView locale={locale} dict={dict} path={path} />;
+  if (pageKey === "popularGames") return <GamesView locale={locale} dict={dict} path={path} />;
 
   const page = dict.pages[pageKey];
   const crumbs = [
@@ -82,9 +83,6 @@ export function PageView({
             <ContactForm forms={dict.forms} />
             <SocialList dict={dict} />
           </div>
-        ) : null}
-        {pageKey === "popularGames" ? (
-          <GamesBrowser games={dict.games} images={GAME_IMAGES} allLabel={dict.gamesUi.all} filterLabel={dict.gamesUi.filterLabel} />
         ) : null}
         {pageKey === "payments" || pageKey === "topup" ? <PaymentGrid dict={dict} /> : null}
         {pageKey === "faq" ? <FaqList items={dict.faqs} /> : null}

@@ -190,6 +190,48 @@ export type PromotionGuide = {
   registerCta: string;
 };
 
+export type GamesGuide = {
+  explore: string;
+  categoriesCta: string;
+  heroAlt: string;
+  featuredTitle: string;
+  featuredLead: string;
+  featuredMark: string;
+  categoriesTitle: string;
+  categoriesLead: string;
+  categories: { id: "slots" | "mahjong"; label: string; text: string }[];
+  searchLabel: string;
+  searchPlaceholder: string;
+  sortLabel: string;
+  sorts: { id: "published" | "az" | "za"; label: string }[];
+  countLabel: string;
+  clear: string;
+  empty: string;
+  libraryTitle: string;
+  libraryLead: string;
+  railTitle: string;
+  railLead: string;
+  railLabel: string;
+  prev: string;
+  next: string;
+  discoverTitle: string;
+  discoverLead: string;
+  topics: { id: "slots" | "mahjong" | "fishing" | "live"; title: string; text: string; link: string; href?: string }[];
+  stepsTitle: string;
+  stepsLead: string;
+  steps: { title: string; text: string }[];
+  galleryTitle: string;
+  galleryLead: string;
+  faqTitle: string;
+  faqLead: string;
+  faqs: Faq[];
+  closeTitle: string;
+  closeLead: string;
+  promoCta: string;
+  browseCta: string;
+  registerCta: string;
+};
+
 export type Step = {
   title: string;
   text: string;
@@ -361,7 +403,7 @@ export type Dictionary = {
     register: InfoPage & { guide: RegisterGuide };
     download: InfoPage & { guide: DownloadGuide };
     promotion: InfoPage & { guide: PromotionGuide };
-    popularGames: InfoPage;
+    popularGames: InfoPage & { guide: GamesGuide };
     blog: InfoPage;
     topup: InfoPage;
     shareholder: InfoPage;
