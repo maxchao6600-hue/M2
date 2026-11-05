@@ -52,6 +52,26 @@ export type Faq = {
   a: string;
 };
 
+export type LoginGuide = {
+  formTitle: string;
+  points: string[];
+  artAlt: string;
+  accessTitle: string;
+  accessLead: string;
+  steps: { title: string; text: string }[];
+  troubleTitle: string;
+  troubleLead: string;
+  troubles: { id: string; title: string; text: string; steps: string[]; href: string; link: string }[];
+  securityTitle: string;
+  securityLead: string;
+  security: { title: string; text: string }[];
+  faqTitle: string;
+  faqLead: string;
+  faqs: Faq[];
+  relatedTitle: string;
+  related: { href: string; label: string; text: string }[];
+};
+
 export type Step = {
   title: string;
   text: string;
@@ -138,6 +158,12 @@ export type Dictionary = {
     topic: string;
     message: string;
     submitLogin: string;
+    showPassword: string;
+    hidePassword: string;
+    checking: string;
+    forgotDetails: string;
+    registerInstead: string;
+    loginNotice: string;
     submitRegister: string;
     submitContact: string;
     ageConfirm: string;
@@ -202,7 +228,7 @@ export type Dictionary = {
   posts: Post[];
   seoBlocks: Block[];
   pages: {
-    login: InfoPage;
+    login: InfoPage & { guide: LoginGuide };
     register: InfoPage;
     download: InfoPage;
     promotion: InfoPage;

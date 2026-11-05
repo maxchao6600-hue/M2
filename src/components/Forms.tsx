@@ -1,17 +1,36 @@
 "use client";
 
-import { useState } from "react";
-import type { FormEvent } from "react";
+import { useEffect, useRef, useState } from "react";
+import type { FormEvent, ReactNode, Ref } from "react";
+import { LocaleLink } from "@/components/LocaleLink";
 import type { Dictionary } from "@/content/types";
+import type { Locale } from "@/lib/site";
 
 type Forms = Dictionary["forms"];
 
-export function LoginForm({ forms }: { forms: Forms }) {
+export function LoginForm({ forms, locale, title }: { forms: Forms; locale: Locale; title: string }) {
   const [errors, setErrors] = useState<Record<string, string>>({});
   const [done, setDone] = useState(false);
+  const [pending, setPending] = useState(false);
+  const [showPassword, setShowPassword] = useState(false);
+  const usernameRef = useRef<HTMLInputElement>(null);
+  const rememberRef = useRef<HTMLInputElement>(null);
+  const timer = useRef(0);
+  const live = useRef(true);
+
+  useEffect(() => {
+    const saved = window.localStorage.getItem("m2-username");
+    if (saved && usernameRef.current) usernameRef.current.value = saved;
+    if (saved && rememberRef.current) rememberRef.current.checked = true;
+    return () => {
+      live.current = false;
+      window.clearTimeout(timer.current);
+    };
+  }, []);
 
   function onSubmit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
+    if (pending) return;
     const data = new FormData(event.currentTarget);
     const next: Record<string, string> = {};
     const username = String(data.get("username") ?? "").trim();
@@ -19,27 +38,65 @@ export function LoginForm({ forms }: { forms: Forms }) {
     if (!username) next.username = forms.required;
     if (password.length < 8) next.password = forms.passwordShort;
     setErrors(next);
-    if (Object.keys(next).length === 0) {
-      if (data.get("remember") === "on") {
-        window.localStorage.setItem("m2-username", username);
-      }
+    if (Object.keys(next).length > 0) return;
+    if (data.get("remember") === "on") window.localStorage.setItem("m2-username", username);
+    else window.localStorage.removeItem("m2-username");
+    setPending(true);
+    timer.current = window.setTimeout(() => {
+      if (!live.current) return;
+      setPending(false);
       setDone(true);
-    }
+    }, 450);
   }
 
   if (done) return <Success text={forms.loginSuccess} />;
 
   return (
-    <form onSubmit={onSubmit} className="surface grid gap-4 rounded-3xl p-5 sm:p-6" noValidate>
-      <Field label={forms.username} name="username" error={errors.username} autoComplete="username" />
-      <Field label={forms.password} name="password" type="password" error={errors.password} autoComplete="current-password" />
+    <form onSubmit={onSubmit} className="surface grid gap-4 rounded-3xl p-5 sm:p-6" noValidate aria-busy={pending || undefined}>
+      <h2 className="font-display text-3xl text-cream">{title}</h2>
+      <Field
+        id="login-username"
+        label={forms.username}
+        name="username"
+        error={errors.username}
+        autoComplete="username"
+        inputRef={usernameRef}
+        className="text-base"
+      />
+      <Field
+        id="login-password"
+        label={forms.password}
+        name="password"
+        type={showPassword ? "text" : "password"}
+        error={errors.password}
+        autoComplete="current-password"
+        className="pr-20 text-base"
+        end={
+          <button
+            type="button"
+            className="text-xs font-semibold text-gold"
+            aria-pressed={showPassword}
+            aria-controls="login-password"
+            onClick={() => setShowPassword((value) => !value)}
+          >
+            {showPassword ? forms.hidePassword : forms.showPassword}
+          </button>
+        }
+      />
       <label className="flex items-center gap-2 text-sm text-cream/85">
-        <input type="checkbox" name="remember" className="accent-orange" />
+        <input ref={rememberRef} type="checkbox" name="remember" className="accent-orange" />
         {forms.remember}
       </label>
-      <button type="submit" className="btn-primary rounded-full px-5 py-3 text-sm font-semibold">
-        {forms.submitLogin}
+      <a href="#login-forgotten" className="text-sm font-semibold text-gold hover:text-gold-soft">
+        {forms.forgotDetails}
+      </a>
+      <button type="submit" className="btn-primary rounded-full px-5 py-3 text-sm font-semibold disabled:opacity-70" disabled={pending}>
+        {pending ? forms.checking : forms.submitLogin}
       </button>
+      <LocaleLink locale={locale} href="/register" className="text-sm font-semibold text-gold hover:text-gold-soft">
+        {forms.registerInstead}
+      </LocaleLink>
+      <p className="text-xs leading-5 text-muted">{forms.loginNotice}</p>
     </form>
   );
 }
@@ -136,6 +193,10 @@ function Field({
   type = "text",
   autoComplete,
   inputMode,
+  id,
+  className = "",
+  inputRef,
+  end,
 }: {
   label: string;
   name: string;
@@ -143,20 +204,37 @@ function Field({
   type?: string;
   autoComplete?: string;
   inputMode?: "tel" | "text";
+  id?: string;
+  className?: string;
+  inputRef?: Ref<HTMLInputElement>;
+  end?: ReactNode;
 }) {
+  const errorId = error && id ? `${id}-error` : undefined;
   return (
-    <label className="grid gap-1 text-sm">
-      <span className="font-medium text-cream">{label}</span>
-      <input
-        name={name}
-        type={type}
-        autoComplete={autoComplete}
-        inputMode={inputMode}
-        aria-invalid={error ? true : undefined}
-        className="rounded-xl border border-white/10 bg-[#120e0c] px-3 py-3 text-cream outline-none focus:border-gold"
-      />
-      {error ? <span className="text-xs text-orange">{error}</span> : null}
-    </label>
+    <div className="grid gap-1 text-sm">
+      <label htmlFor={id} className="font-medium text-cream">
+        {label}
+      </label>
+      <div className="relative">
+        <input
+          ref={inputRef}
+          id={id}
+          name={name}
+          type={type}
+          autoComplete={autoComplete}
+          inputMode={inputMode}
+          aria-invalid={error ? true : undefined}
+          aria-describedby={errorId}
+          className={`w-full rounded-xl border border-white/10 bg-[#120e0c] px-3 py-3 text-cream outline-none focus:border-gold ${className}`}
+        />
+        {end ? <div className="absolute inset-y-0 right-3 flex items-center">{end}</div> : null}
+      </div>
+      {error ? (
+        <span id={errorId} className="text-xs text-orange">
+          {error}
+        </span>
+      ) : null}
+    </div>
   );
 }
 
